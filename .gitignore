@@ -1,0 +1,10 @@
+*-debug.log
+*-error.log
+*.DS_Store
+/tmp
+node_modules
+*.env
+*package-lock.json
+yarn.lock
+client/lib
+appwrite.json

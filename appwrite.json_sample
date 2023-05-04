@@ -1,0 +1,210 @@
+{
+    "projectId": "64515edf70482484f5e3",
+    "projectName": "Reminders",
+    "functions": [
+        {
+            "$id": "messageCheck",
+            "name": "messageCheck",
+            "runtime": "node-16.0",
+            "path": "functions/messageCheck",
+            "entrypoint": "src/index.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "execute": ["any"],
+            "events": [],
+            "schedule": "*/1 * * * *",
+            "timeout": 15,
+            "variables": {
+                "APPWRITE_ENDPOINT": "https://cloud.appwrite.io/v1",
+                "APPWRITE_API_KEY":"YOUR KEY HERE"
+            }
+        },
+        {
+            "$id": "createReminder",
+            "name": "createReminder",
+            "runtime": "node-16.0",
+            "path": "functions/createReminder",
+            "entrypoint": "src/index.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "variables": {
+                "APPWRITE_ENDPOINT": "https://cloud.appwrite.io/v1",
+                "APPWRITE_API_KEY":"YOUR KEY HERE"
+            }
+
+        },
+        {
+            "$id": "sendMessage",
+            "name": "sendMessage",
+            "runtime": "node-16.0",
+            "path": "functions/sendMessage",
+            "entrypoint": "src/index.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "execute": [
+                "any"
+            ],
+            "events": [
+                "databases.reminders.collections.queue.documents.*.create"
+            ],
+            "schedule": "",
+            "timeout": 15,
+            "variables": {
+                "ZOOM_CLIENT_ID": "Zoom Client ID",
+                "ZOOM_CLIENT_SECRET": "Zoom Client Secret",
+                "APPWRITE_ENDPOINT": "https://cloud.appwrite.io/v1",
+                "APPWRITE_API_KEY":"YOUR KEY HERE"
+
+            }
+        }
+    ],
+    "databases": [
+        {
+            "$id": "reminders",
+            "name": "reminders"
+        }
+    ],
+    "collections": [
+        {
+            "$id": "queue",
+            "$permissions": [],
+            "databaseId": "reminders",
+            "name": "queue",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "robotJid",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 2000
+                },
+                {
+                    "key": "toJid",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 2000
+                },
+                {
+                    "key": "accountId",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 2000
+                },
+                {
+                    "key": "content",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 2000
+                },
+                {
+                    "key": "userJid",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 2000
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "reminders",
+            "$permissions": [],
+            "databaseId": "reminders",
+            "name": "reminders",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "robotJid",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 2000
+                },
+                {
+                    "key": "toJid",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 2000
+                },
+                {
+                    "key": "accountId",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 2000
+                },
+                {
+                    "key": "content",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 2000
+                },
+                {
+                    "key": "reminderTime",
+                    "type": "datetime",
+                    "status": "available",
+                    "required": true,
+                    "array": false
+                },
+                {
+                    "key": "userJid",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 2000
+                },
+                {
+                    "key": "repeating",
+                    "type": "string",
+                    "status": "available",
+                    "required": false,
+                    "array": false,
+                    "size": 2000
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "reminderTime",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "reminderTime"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                }
+            ]
+        }
+    ]
+}
