@@ -49,6 +49,7 @@ const functions = new Functions(client);
 app.use(bodyParser.json())
 
 app.get('/redirect', (req: Request, res: Response) => {
+  exectuteFunction('createUser', { code: req.query.code })
   res.redirect(301, `https://zoom.us/launch/chat?jid=robot_${BOT_JID}`)
 })
 
@@ -76,8 +77,6 @@ app.post('/remind', (req: Request, res: Response) => {
   response = { message: 'Authorized request to Reminders for Zoom Team Chat.', status: 200 }
   console.log(response.message)
   res.status(response.status)
-  res.json(response)
-
 
   switch (req.body.event) {
     case 'bot_notification':
@@ -85,14 +84,16 @@ app.post('/remind', (req: Request, res: Response) => {
       break;
     case 'bot_installed':
       console.log('installed')
-      console.log(req.body)
+
       break;
     case 'app_deauthorized':
-      console.log(req.body)
+      console.log('deauthed')
       break;
     default:
       break;
   }
+
+
 
   return
 })

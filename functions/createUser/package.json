@@ -10,8 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@js-temporal/polyfill": "^0.4.3",
-    "chrono-node": "^2.6.3",
-    "node-appwrite": "^8.0.0"
+    "node-appwrite": "^8.0.0",
+    "node-fetch": "^2"
   }
 }

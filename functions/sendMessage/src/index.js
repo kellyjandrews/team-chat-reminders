@@ -2,7 +2,7 @@ const {Client,Databases} = require("node-appwrite");
 const fetch = require('node-fetch');
 const { Headers } = require('node-fetch');
 
-async function getChatToken() {
+async function getAuthToken(req) {
   const HASHED_ZOOM_KEY = Buffer.from(`${req.variables["ZOOM_CLIENT_ID"]}:${req.variables["ZOOM_CLIENT_SECRET"]}`).toString('base64');
 
   const meta = {
@@ -21,15 +21,15 @@ async function getChatToken() {
 }
 
 
-async function sendMessage(message) {
-  const chat_token = await getChatToken()
+async function sendMessage(req) {
+  const auth_token = await getAuthToken(req)
  
   const meta = {
     'Content-Type': 'application/json',
-    "Authorization": `Bearer ${chat_token['access_token']}`
+    "Authorization": `Bearer ${auth_token['access_token']}`
   }
   const headers = new Headers(meta);
-
+  const message = JSON.parse(req.variables["APPWRITE_FUNCTION_EVENT_DATA"])
   const body = {
     "robot_jid": message.robotJid,
     "to_jid": message.toJid,
@@ -60,10 +60,10 @@ module.exports = async function (req, res) {
     .setEndpoint(req.variables["APPWRITE_ENDPOINT"])
     .setProject(req.variables["APPWRITE_FUNCTION_PROJECT_ID"])
     .setKey(req.variables["APPWRITE_API_KEY"])
-
+  
   const database = new Databases(client);
   
-  await sendMessage(JSON.parse(req.variables["APPWRITE_FUNCTION_EVENT_DATA"]))
+  await sendMessage()
   res.send('success')
   } catch (error) {
     res.json({'error': error.toString()})
