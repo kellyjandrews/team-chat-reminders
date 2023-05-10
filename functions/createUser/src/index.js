@@ -1,8 +1,11 @@
-const {Client,Users} = require("node-appwrite");
+const {Client,Users,Databases} = require("node-appwrite");
 const fetch = require('node-fetch');
 const { Headers } = require('node-fetch');
 
-async function getAuthToken(req) {
+
+module.exports = async function (req, res) {
+
+async function getAuthToken() {
   const HASHED_ZOOM_KEY = Buffer.from(`${req.variables["ZOOM_CLIENT_ID"]}:${req.variables["ZOOM_CLIENT_SECRET"]}`).toString('base64');
 
   const meta = {
@@ -22,8 +25,8 @@ async function getAuthToken(req) {
 }
 
 
-async function getUser(req) {
-  const auth_token = await getAuthToken(req)
+async function getUser() {
+  const auth_token = await getAuthToken()
   const meta = {
     'Content-Type': 'application/json',
     "Authorization": `Bearer ${auth_token['access_token']}`
@@ -45,14 +48,14 @@ try {
 return
 }
 
-module.exports = async function (req, res) {
+
   const client = new Client()
   .setEndpoint(req.variables["APPWRITE_ENDPOINT"])
   .setProject(req.variables["APPWRITE_FUNCTION_PROJECT_ID"])
   .setKey(req.variables["APPWRITE_API_KEY"])
   const users = new Users(client);
-
-  let user = await getUser(req)
+  const databases = new Databases(client);
+  let user = await getUser()
   const {
     id, display_name, email, first_name, last_name, language, timezone
   } = user.data;
@@ -69,10 +72,10 @@ module.exports = async function (req, res) {
       lastName : last_name
     })
     await users.updateEmailVerification(id, true)
+
   } catch (error) {
    console.error(error) 
   }
-
 
   res.send('user created', 201)
 };

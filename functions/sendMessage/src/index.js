@@ -2,7 +2,9 @@ const {Client,Databases} = require("node-appwrite");
 const fetch = require('node-fetch');
 const { Headers } = require('node-fetch');
 
-async function getAuthToken(req) {
+module.exports = async function (req, res) {
+
+async function getAuthToken() {
   const HASHED_ZOOM_KEY = Buffer.from(`${req.variables["ZOOM_CLIENT_ID"]}:${req.variables["ZOOM_CLIENT_SECRET"]}`).toString('base64');
 
   const meta = {
@@ -21,7 +23,7 @@ async function getAuthToken(req) {
 }
 
 
-async function sendMessage(req) {
+async function sendMessage() {
   const auth_token = await getAuthToken(req)
  
   const meta = {
@@ -54,7 +56,7 @@ try {
 return
 }
 
-module.exports = async function (req, res) {
+
   try {
     const client = new Client()
     .setEndpoint(req.variables["APPWRITE_ENDPOINT"])
