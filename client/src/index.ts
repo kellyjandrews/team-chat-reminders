@@ -3,9 +3,8 @@ dotenv.config()
 import express, { Request, Response } from 'express'
 import bodyParser from 'body-parser'
 import { createHmac } from 'node:crypto'
-import { Client, Functions } from 'node-appwrite'
+import { Client, Databases, Functions, Users } from 'node-appwrite'
 import { IncomingHttpHeaders } from 'node:http'
-
 
 interface ZoomHeaders extends IncomingHttpHeaders {
   'x-zm-request-timestamp'?: 'string';
@@ -45,12 +44,15 @@ const client = new Client()
   .setKey(APPWRITE_API_KEY)
 
 const functions = new Functions(client);
+const users = new Users(client);
+const databases = new Databases(client);
 
 app.use(bodyParser.json())
 
 app.get('/redirect', (req: Request, res: Response) => {
   exectuteFunction('createUser', { code: req.query.code })
   res.redirect(301, `https://zoom.us/launch/chat?jid=robot_${BOT_JID}`)
+
 })
 
 function validateWebhook<T>(headers: ZoomHeaders, body: ZoomBotNotificationBody) {
@@ -64,27 +66,21 @@ async function exectuteFunction(functionId: string, data?: any) {
   await functions.createExecution(functionId, JSON.stringify(data))
 }
 
-async function handleNotifications(payload: ZoomBotNotificationBody["payload"]) {
-  exectuteFunction('createReminder', payload)
-}
-
-app.post('/remind', (req: Request, res: Response) => {
+app.post('/remind', async (req: Request, res: Response) => {
 
   let response;
   const isValid = validateWebhook(req.headers, req.body)
 
   if (!isValid) response = { message: 'Unauthorized request to Reminders for Zoom Team Chat.', status: 401 };
   response = { message: 'Authorized request to Reminders for Zoom Team Chat.', status: 200 }
-  console.log(response.message)
-  res.status(response.status)
 
   switch (req.body.event) {
     case 'bot_notification':
-      handleNotifications(req.body.payload)
+      if (!req.body.payload) return;
+      exectuteFunction('createReminder', req.body.payload)
       break;
     case 'bot_installed':
       console.log('installed')
-
       break;
     case 'app_deauthorized':
       console.log('deauthed')
@@ -92,12 +88,7 @@ app.post('/remind', (req: Request, res: Response) => {
     default:
       break;
   }
-
-
-
   return
 })
-
-
 
 app.listen(port, () => console.log(`Reminders for Zoom Team Chat listening on port ${port}.`))
