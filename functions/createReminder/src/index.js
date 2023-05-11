@@ -43,9 +43,12 @@ module.exports = async function (req, res) {
       "head": {
         "text": "Reminder"   
       },
-      "body": {
-        "text": reminderText
-      }
+      "body": [
+        {
+          "type": "message",
+          "text": reminderText
+        }
+      ]
     })
   }
   // send message back with confirmation button?
