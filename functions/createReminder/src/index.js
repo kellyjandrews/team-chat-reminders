@@ -17,15 +17,10 @@ module.exports = async function (req, res) {
   const userPrefs = await users.getPrefs(payload.userId)
   const dateParse = chrono.parse(payload.cmd)
   const start = dateParse[0].start.date();
-  console.log(payload)
-  console.log(userPrefs)
-  console.log(dateParse)
-  console.log(start)
+
   const zdt = Temporal.Instant.from(start.toISOString()).toZonedDateTimeISO(userPrefs.timezone);
   const parts = new Intl.DateTimeFormat("en-US", {timeZoneName: "short",}).formatToParts(zdt);
-  console.log(zdt)
-  console.log(parts)
-  // const timeZoneName = parts.find(p => p.type === "timeZoneName").value;
+
   const timeZoneName = parts[14].value
   const dateParseTZ = chrono.parse(payload.cmd, { timezone: timeZoneName });
   let reminderText = payload.cmd.substring(0, dateParse[0].index - 1)
@@ -51,18 +46,13 @@ module.exports = async function (req, res) {
       ]
     })
   }
-  // send message back with confirmation button?
-  // console.log(messageObject)
 
-  // create reminder object
   await database.createDocument(
     'reminders', 
     'reminders', 
     ID.unique(),
     messageObject 
   )
-
-  // send message back stating the reminder has been created.
 
   res.send('success', 201)
 };

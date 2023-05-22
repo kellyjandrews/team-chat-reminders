@@ -1,6 +1,6 @@
 {
-    "projectId": "64515edf70482484f5e3",
-    "projectName": "Reminders",
+    "projectId": "YOUR_PROJECT_ID",
+    "projectName": "",
     "functions": [
         {
             "$id": "messageCheck",
@@ -12,13 +12,15 @@
                 "node_modules",
                 ".npm"
             ],
-            "execute": ["any"],
+            "execute": [
+                "any"
+            ],
             "events": [],
             "schedule": "*/1 * * * *",
             "timeout": 15,
             "variables": {
                 "APPWRITE_ENDPOINT": "https://cloud.appwrite.io/v1",
-                "APPWRITE_API_KEY":"YOUR KEY HERE"
+                "APPWRITE_API_KEY": "YOUR_APPWRITE_KEY"
             }
         },
         {
@@ -39,9 +41,8 @@
             "timeout": 15,
             "variables": {
                 "APPWRITE_ENDPOINT": "https://cloud.appwrite.io/v1",
-                "APPWRITE_API_KEY":"YOUR KEY HERE"
+                "APPWRITE_API_KEY": "YOUR_APPWRITE_KEY"
             }
-
         },
         {
             "$id": "sendMessage",
@@ -62,11 +63,33 @@
             "schedule": "",
             "timeout": 15,
             "variables": {
-                "ZOOM_CLIENT_ID": "Zoom Client ID",
-                "ZOOM_CLIENT_SECRET": "Zoom Client Secret",
+                "ZOOM_CLIENT_ID": "YOUR_CLIENT_ID",
+                "ZOOM_CLIENT_SECRET": "YOUR_CLIENT_SECRET",
                 "APPWRITE_ENDPOINT": "https://cloud.appwrite.io/v1",
-                "APPWRITE_API_KEY":"YOUR KEY HERE"
-
+                "APPWRITE_API_KEY": "YOUR_APPWRITE_KEY"
+            }
+        },
+        {
+            "$id": "createUser",
+            "name": "createUser",
+            "runtime": "node-16.0",
+            "path": "functions/createUser",
+            "entrypoint": "src/index.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "variables": {
+                "ZOOM_CLIENT_ID": "YOUR_CLIENT_ID",
+                "ZOOM_CLIENT_SECRET": "YOUR_CLIENT_SECRET",
+                "APPWRITE_ENDPOINT": "https://cloud.appwrite.io/v1",
+                "APPWRITE_API_KEY": "YOUR_APPWRITE_KEY"
             }
         }
     ],
