@@ -52,7 +52,6 @@ app.use(bodyParser.json())
 app.get('/redirect', (req: Request, res: Response) => {
   exectuteFunction('createUser', { code: req.query.code })
   res.redirect(301, `https://zoom.us/launch/chat?jid=robot_${BOT_JID}`)
-
 })
 
 function validateWebhook<T>(headers: ZoomHeaders, body: ZoomBotNotificationBody) {
