@@ -86,5 +86,3 @@ For example:
 /remindme to drink water in 3 minutes
 
 Wait for reminder time duration & receive reminder notification in your client!
-
-**Remember:** This tutorial is customizable depending upon personal preferences & use-cases.
