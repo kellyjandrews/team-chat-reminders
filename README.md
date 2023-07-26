@@ -39,7 +39,13 @@ Appwrite is an open-source backend platform that simplifies complex tasks requir
 
 ## Setting Up Appwrite:
 
-Create a new project with an API key and add users.read and users.write scopes. Then download CLI and login into appwrite. Add API key and project key using following commands:
+Create a new project with an API key and add the following scopes: 
+ + auth.users.read
+ + auth.users.write
+ + databases - all
+ + functions - all
+
+Then download CLI and login into appwrite. Add API key and project key using following commands:
 
 ```
 appwrite client --endpoint https://cloud.appwrite.io/v1
